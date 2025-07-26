@@ -21,3 +21,7 @@
 ## 区块链解决的核心问题
 
 ![区块链解决的核心问题](static/区块链解决的核心问题.png)
+
+## effective_go学习
+
+![go](assets/go.png)
