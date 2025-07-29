@@ -11,15 +11,15 @@
   <body>
     <h1>Haikus for Mona</h1>
     <div>
-      <% for(var i=0; i < haikus.length; i++) { %>
+      <% for(var j=0; j < haikus.length; j++) { %>
         <img
           class="mona-images"
-          src="images/<%= haikus[i].image %>" />
+          src="images/<%= haikus[j].image %>" />
         <div 
           class="haiku-containers">
           <p 
             class="haikus"
-          ><%- haikus[i].text %></p>
+          ><%- haikus[j].text %></p>
         </div>
       <% } %>
     </div>
