@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"reflect"
+	"sync"
 	"time"
 )
 
@@ -313,6 +315,113 @@ func testMapde() {
 	}
 	fmt.Println("m = ", m)
 }
+
+func testMapde2() {
+	m := make(map[string]int)
+	var wg sync.WaitGroup
+	var lock sync.Mutex
+	wg.Add(2)
+
+	go func() {
+		for {
+			lock.Lock()
+			m["a"]++
+			lock.Unlock()
+		}
+	}()
+
+	go func() {
+		for {
+			lock.Lock()
+			m["a"]++
+			fmt.Println(m["a"])
+			lock.Unlock()
+		}
+	}()
+
+	select {
+	case <-time.After(time.Second * 5):
+		fmt.Println("timeout, stopping")
+	}
+}
+
+func testfor2() {
+	array := [...][3]int{{1, 2, 3}, {4, 5, 6}}
+	slice := [][]int{{1, 2}, {3}}
+	// 只拿到行的索引
+	for index := range array {
+		// array[index]类型是一维数组
+		fmt.Println(reflect.TypeOf(array[index]))
+		fmt.Printf("array -- index=%d, value=%v\n", index, array[index])
+	}
+
+	for index := range slice {
+		// slice[index]类型是一维数组
+		fmt.Println(reflect.TypeOf(slice[index]))
+		fmt.Printf("slice -- index=%d, value=%v\n", index, slice[index])
+	}
+
+	// 拿到行索引和该行的数据
+	fmt.Println("print array element")
+	for row_index, row_value := range array {
+		fmt.Println(row_index, reflect.TypeOf(row_value), row_value)
+	}
+
+	fmt.Println("print array slice")
+	for row_index, row_value := range slice {
+		fmt.Println(row_index, reflect.TypeOf(row_value), row_value)
+	}
+
+	// 双重遍历，拿到每个元素的值
+	for row_index, row_value := range array {
+		for col_index, col_value := range row_value {
+			fmt.Printf("array[%d][%d]=%d ", row_index, col_index, col_value)
+		}
+		fmt.Println()
+	}
+	for row_index, row_value := range slice {
+		for col_index, col_value := range row_value {
+			fmt.Printf("slice[%d][%d]=%d ", row_index, col_index, col_value)
+		}
+		fmt.Println()
+	}
+}
+
+func addData(ch chan int) {
+	size := cap(ch)
+	for i := 0; i < size; i++ {
+		ch <- i
+		time.Sleep(1 * time.Second)
+	}
+	close(ch)
+}
+
+func main1() {
+	ch := make(chan int, 10)
+
+	go addData(ch)
+
+	for i := range ch {
+		fmt.Println(i)
+	}
+}
+
+func main2() {
+	hash := map[string]int{
+		"a": 1,
+		"f": 2,
+		"z": 3,
+		"c": 4,
+	}
+
+	for key := range hash {
+		fmt.Printf("key=%s, value=%d\n", key, hash[key])
+	}
+
+	for key, value := range hash {
+		fmt.Printf("key=%s, value=%d\n", key, value)
+	}
+}
 func main() {
 	//testfor()
 	//testArr()
@@ -322,5 +431,8 @@ func main() {
 	//testAppend()
 	//testCopy()
 	//testMap()
-	testMapde()
+	//testMapde2()
+	//testfor2()
+	//main1()
+	main2()
 }
