@@ -598,7 +598,7 @@ func receiveOnly(ch <-chan int) {
 func sendOnly(ch chan<- int) {
 	for i := 0; i < 5; i++ {
 		ch <- i
-		fmt.Print("发送 %d\n", i)
+		fmt.Printf("发送 %d\n", i)
 	}
 	close(ch)
 }
@@ -620,6 +620,36 @@ func main9() {
 				fmt.Println("Channel已关闭")
 				return
 			}
+			fmt.Printf("主goroutine接收到: %d\n", v)
+		case <-timeout:
+			fmt.Println("操作超时")
+			return
+		default:
+			fmt.Println("没有数据，等待中...")
+			time.Sleep(500 * time.Millisecond)
+		}
+	}
+}
+
+func main10() {
+	ch1 := make(chan int, 10)
+	ch2 := make(chan int, 10)
+	ch3 := make(chan int, 10)
+	go func() {
+		for i := 0; i < 10; i++ {
+			ch1 <- i
+			ch2 <- i
+			ch3 <- i
+		}
+	}()
+	for i := 0; i < 10; i++ {
+		select {
+		case x := <-ch1:
+			fmt.Printf("receive %d from channel 1\n", x)
+		case y := <-ch2:
+			fmt.Printf("receive %d from channel 2\n", y)
+		case z := <-ch3:
+			fmt.Printf("receive %d from channel 3\n", z)
 		}
 	}
 }
@@ -636,5 +666,5 @@ func main() {
 	//testfor2()
 	//main1()
 	//main2()
-	main7()
+	main10()
 }
