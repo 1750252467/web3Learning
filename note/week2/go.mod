@@ -1,3 +1,4 @@
-module week2
+module web3Learning
+
 
 go 1.24
