@@ -154,6 +154,8 @@ import (
 //		}
 //	}
 func main() {
+
+	ch := make(chan int)
 	ctx, cancel := context.WithCancel(context.Background())
 	go Speak(ctx)
 	time.Sleep(10 * time.Second)
