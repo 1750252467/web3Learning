@@ -1,9 +1,8 @@
 package main
 
 import (
-	"context"
+	"errors"
 	"fmt"
-	"time"
 )
 
 // func main() {
@@ -153,26 +152,102 @@ import (
 //			}
 //		}
 //	}
-func main() {
+// func main() {
 
-	ch := make(chan int)
-	ctx, cancel := context.WithCancel(context.Background())
-	go Speak(ctx)
-	time.Sleep(10 * time.Second)
-	cancel()
-	time.Sleep(1 * time.Second)
+// 	ch := make(chan int)
+// 	ctx, cancel := context.WithCancel(context.Background())
+// 	go Speak(ctx)
+// 	time.Sleep(10 * time.Second)
+// 	cancel()
+// 	time.Sleep(1 * time.Second)
+// }
+
+// func Speak(ctx context.Context) {
+// 	for range time.Tick(time.Second) {
+// 		select {
+// 		case <-ctx.Done():
+// 			fmt.Println("speak end")
+// 			return
+// 		default:
+// 			fmt.Println("speak")
+
+// 		}
+
+//		}
+//	}
+// func readFile(path string) error {
+// 	if path == "" {
+// 		return fmt.Errorf("路径为空：%w", errors.New("无效输入")) // 包装错误
+// 	}
+// 	return nil
+// }
+
+//	func main() {
+//		err := readFile("")
+//		if err != nil {
+//			println(err.Error()) // 输出：路径为空：无效输入
+//		}
+//	}
+func divide(a, b int) (int, error) {
+	if b == 0 {
+		// 创建错误并返回
+		return 0, errors.New("除数不能为0")
+	}
+	return a / b, nil
 }
 
-func Speak(ctx context.Context) {
-	for range time.Tick(time.Second) {
-		select {
-		case <-ctx.Done():
-			fmt.Println("speak end")
-			return
-		default:
-			fmt.Println("speak")
+type BusinessError struct {
+	Code    int    // 业务错误码
+	Message string // 错误描述
+}
 
+// 实现error接口
+func (e *BusinessError) Error() string {
+	return fmt.Sprintf("业务错误 [code=%d]: %s", e.Code, e.Message)
+}
+
+// 工厂方法创建错误
+func NewBusinessError(code int, message string) error {
+	return &BusinessError{Code: code, Message: message}
+}
+
+// 使用
+func checkUser(id int) error {
+	if id <= 0 {
+		return NewBusinessError(1001, "用户ID无效")
+	}
+	return nil
+}
+func main() {
+	// res, err := divide(10, 0)
+	// if err != nil { // 显式检查错误
+	// 	println("错误：", err.Error()) // 输出：错误：除数不能为0
+	// 	return
+	// }
+	// println("结果：", res)
+	// err1 := errors.New("原始错误")
+	// err2 := fmt.Errorf("包装一层：%w", err1)
+	// err3 := fmt.Errorf("包装两层：%w", err2)
+
+	// fmt.Println(errors.Unwrap(err3) == err2)                // true
+	// fmt.Println(errors.Unwrap(errors.Unwrap(err3)) == err1) // true
+	err := checkUser(0)
+	if err != nil {
+		// 尝试提取BusinessError类型
+		var bizErr *BusinessError
+		if errors.As(err, &bizErr) {
+			// 处理业务错误
+			fmt.Printf("捕获业务错误：代码=%d，消息=%s\n", bizErr.Code, bizErr.Message)
+
+			// 根据错误码执行不同逻辑
+			switch bizErr.Code {
+			case 1001:
+				fmt.Println("处理用户ID无效的情况")
+				// 其他错误码处理...
+			}
+		} else {
+			// 处理其他类型错误
+			fmt.Printf("其他错误：%v\n", err)
 		}
-
 	}
 }
