@@ -521,7 +521,7 @@ func TestUpdatePost(t *testing.T) {
     assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
-func TestDeletePost(t *testing.T) {
+// 当前文件中存在重复的 TestDeletePost 函数，需要删除多余的定义，此处保留原有函数声明
     // 设置测试环境
     db := setupTestDB()
     r := setupTestRouter(db)
