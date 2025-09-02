@@ -5,6 +5,7 @@ import (
 
 	"note/week6/zero/test2/api/internal/svc"
 	"note/week6/zero/test2/api/internal/types"
+	"note/week6/zero/test2/api/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,19 +27,16 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 
 func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
 	// todo: add your logic here and delete this line
-	m := map[int64]string{
-		1: "张三",
-		2: "李四",
-		3: "王五",
+	user, err := l.svcCtx.UserModel.FindOne(l.ctx, req.UserId)
+	if err != nil && err != model.ErrNotFound {
+		return nil, err.New("查询数据失败")
 	}
-	nickname := "unknow"
-
-	if name, ok := m[req.UserId]; ok {
-		nickname = name
+	if user == nil {
+		return nil, err.New("user not found")
 	}
 
 	return &types.UserInfoResp{
-		UserId:   req.UserId,
-		Nickname: nickname,
+		UserId:   user.UserId,
+		Nickname: user.nickname,
 	}, nil
 }
