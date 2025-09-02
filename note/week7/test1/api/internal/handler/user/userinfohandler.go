@@ -3,10 +3,11 @@ package user
 import (
 	"net/http"
 
+	"note/week7/test1/api/internal/logic/user"
+	"note/week7/test1/api/internal/svc"
+	"note/week7/test1/api/internal/types"
+
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"note/week6/zero/test2/api/internal/logic/user"
-	"note/week6/zero/test2/api/internal/svc"
-	"note/week6/zero/test2/api/internal/types"
 )
 
 // 获取用户信息

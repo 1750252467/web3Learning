@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"note/week6/zero/test2/api/internal/config"
-	"note/week6/zero/test2/api/internal/handler"
-	"note/week6/zero/test2/api/internal/svc"
+	"note/week7/test1/api/internal/config"
+	"note/week7/test1/api/internal/handler"
+	"note/week7/test1/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"note/week6/zero/test2/api/internal/svc"
-	"note/week6/zero/test2/api/internal/types"
+	"note/week7/test1/api/internal/svc"
+	"note/week7/test1/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

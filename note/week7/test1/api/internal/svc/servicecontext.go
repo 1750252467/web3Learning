@@ -1,8 +1,9 @@
 package svc
 
 import (
-	"note/week6/zero/test2/api/internal/config"
-	"note/week6/zero/test2/api/model"
+	"note/week7/test1/api/internal/config"
+
+	"note/week7/test1/api/model"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )

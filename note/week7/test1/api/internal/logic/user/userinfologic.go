@@ -2,10 +2,11 @@ package user
 
 import (
 	"context"
+	"errors"
 
-	"note/week6/zero/test2/api/internal/svc"
-	"note/week6/zero/test2/api/internal/types"
-	"note/week6/zero/test2/api/model"
+	"note/week7/test1/api/internal/svc"
+	"note/week7/test1/api/internal/types"
+	"note/week7/test1/api/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,14 +30,14 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoReq) (resp *types.UserInfoRe
 	// todo: add your logic here and delete this line
 	user, err := l.svcCtx.UserModel.FindOne(l.ctx, req.UserId)
 	if err != nil && err != model.ErrNotFound {
-		return nil, err.New("查询数据失败")
+		return nil, errors.New("查询数据失败")
 	}
 	if user == nil {
-		return nil, err.New("user not found")
+		return nil, errors.New("user not found")
 	}
 
 	return &types.UserInfoResp{
-		UserId:   user.UserId,
-		Nickname: user.nickname,
+		UserId:   user.Id,
+		Nickname: user.Nickname,
 	}, nil
 }
