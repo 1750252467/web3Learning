@@ -94,8 +94,6 @@ github.com/yuin/gopher-lua v1.1.1 h1:kYKnWBjvbNP4XLT3+bPEwAXJx262OhaHDWDVOPjL46M
 github.com/yuin/gopher-lua v1.1.1/go.mod h1:GBR0iDaNXjAgGg9zfCvksxSRnQx76gclCIb7kdAd1Pw=
 github.com/zeromicro/go-zero v1.9.0 h1:hlVtQCSHPszQdcwZTawzGwTej1G2mhHybYzMRLuwCt4=
 github.com/zeromicro/go-zero v1.9.0/go.mod h1:TMyCxiaOjLQ3YxyYlJrejaQZF40RlzQ3FVvFu5EbcV4=
-github.com/zeromicro/go-zero/tools/goctl v1.9.0 h1:Ro5YK1iTarQc5XO0BYysRr18+1seBY36YjnxmDkyKRg=
-github.com/zeromicro/go-zero/tools/goctl v1.9.0/go.mod h1:ypiu1QOOEMTHd0Ft8knzqmq4PWBI7+l3ozoi1stGVqo=
 go.opentelemetry.io/otel v1.24.0 h1:0LAOdjNmQeSTzGBzduGe/rU4tZhMwL5rWgtp9Ku5Jfo=
 go.opentelemetry.io/otel v1.24.0/go.mod h1:W7b9Ozg4nkF5tWI5zsXkaKKDjdVjpD4oAt9Qi/MArHo=
 go.opentelemetry.io/otel/exporters/jaeger v1.17.0 h1:D7UpUy2Xc2wsi1Ras6V40q806WM07rqoCWzXu7Sqy+4=
