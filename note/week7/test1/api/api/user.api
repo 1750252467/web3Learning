@@ -27,7 +27,7 @@ type (
 service user-api {
 	@doc "获取用户信息"
 	@handler UserInfo
-	post /user/info (UserInfoReq) returns (UserInfoResp)
+	get /user/info (UserInfoReq) returns (UserInfoResp)
 
 	@doc "修改用户信息"
 	@handler UserUpdate

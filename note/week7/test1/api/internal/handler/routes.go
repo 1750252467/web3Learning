@@ -6,7 +6,7 @@ package handler
 import (
 	"net/http"
 
-	"note/week7/test1/api/internal/handler/user"
+	user "note/week7/test1/api/internal/handler/user"
 	"note/week7/test1/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -17,7 +17,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				// 获取用户信息
-				Method:  http.MethodPost,
+				Method:  http.MethodGet,
 				Path:    "/user/info",
 				Handler: user.UserInfoHandler(serverCtx),
 			},
