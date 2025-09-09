@@ -3,4 +3,4 @@ Host: 0.0.0.0
 Port: 8888
 
 DB:
-  DataSource: root:080657@tcp(mysql:3306)/zero_demo?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:080657@tcp(127.0.0.1:3306)/zero_demo?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
