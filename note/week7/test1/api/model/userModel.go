@@ -1,6 +1,10 @@
 package model
 
-import "github.com/zeromicro/go-zero/core/stores/sqlx"
+import (
+	"context"
+	"fmt"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
+)
 
 var _ UserModel = (*customUserModel)(nil)
 
@@ -10,6 +14,7 @@ type (
 	UserModel interface {
 		userModel
 		withSession(session sqlx.Session) UserModel
+		FindOneByUserId(ctx context.Context, userId int64) (*User, error)
 	}
 
 	customUserModel struct {
@@ -26,4 +31,19 @@ func NewUserModel(conn sqlx.SqlConn) UserModel {
 
 func (m *customUserModel) withSession(session sqlx.Session) UserModel {
 	return NewUserModel(sqlx.NewSqlConnFromSession(session))
+}
+
+// FindOneByUserId 根据userId查询用户信息
+func (m *customUserModel) FindOneByUserId(ctx context.Context, userId int64) (*User, error) {
+	query := fmt.Sprintf("select %s from %s where `user_id` = ? limit 1", userRows, m.table)
+	var resp User
+	err := m.conn.QueryRowCtx(ctx, &resp, query, userId)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlx.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }

@@ -2,7 +2,6 @@ package svc
 
 import (
 	"note/week7/test1/api/internal/config"
-
 	"note/week7/test1/api/model"
 
 	"github.com/zeromicro/go-zero/core/stores/sqlx"

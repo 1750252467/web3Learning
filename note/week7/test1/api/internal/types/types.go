@@ -4,7 +4,7 @@
 package types
 
 type UserInfoReq struct {
-	UserId int64 `json:"userId" form:"id"`
+	UserId int64 `json:"userId" form:"userId"`
 }
 
 type UserInfoResp struct {
