@@ -1,0 +1,32 @@
+Name: blog-api
+Host: 0.0.0.0
+Port: 8888
+
+# MySQL配置
+Mysql:
+  DataSource: root:080657@tcp(127.0.0.1:3306)/blog?parseTime=true&loc=Local
+
+# Redis配置
+Redis:
+  Host: 127.0.0.1:6379
+  Type: node
+  Pass: 
+  Tls: false
+
+# JWT配置
+Auth:
+  AccessSecret: your-secret-key-here
+  AccessExpire: 86400
+
+# Log配置
+Log:
+  Mode: console
+  Level: info
+  Compress: false
+  KeepDays: 7
+  StackCoolDownMillis: 100
+
+# 限流配置
+Limiter:
+  QPS: 100
+  Burst: 200
