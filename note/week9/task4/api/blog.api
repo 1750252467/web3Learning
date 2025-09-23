@@ -1,0 +1,174 @@
+// 博客系统API定义
+// 用户相关模型
+type (
+	// 用户注册请求
+	UserRegisterReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		Email    string `json:"email"`
+	}
+	// 用户注册响应
+	UserRegisterResp {
+		Id       int64  `json:"id"`
+		Username string `json:"username"`
+	}
+	// 用户登录请求
+	UserLoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	// 用户登录响应
+	UserLoginResp {
+		Token string `json:"token"`
+	}
+)
+
+// 文章相关模型
+type (
+	// 创建文章请求
+	CreatePostReq {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
+	// 创建文章响应
+	CreatePostResp {
+		Id int64 `json:"id"`
+	}
+	// 获取文章列表请求
+	GetPostsReq {
+		Page  int `form:"page"`
+		Limit int `form:"limit"`
+	}
+	// 获取文章列表响应
+	GetPostsResp {
+		Posts []Post `json:"posts"`
+	}
+	// 文章信息
+	Post {
+		Id        int64  `json:"id"`
+		Title     string `json:"title"`
+		Content   string `json:"content"`
+		UserId    int64  `json:"userId"`
+		CreatedAt string `json:"createdAt"`
+		UpdatedAt string `json:"updatedAt"`
+	}
+	// 获取文章详情请求
+	GetPostReq {
+		Id int64 `path:"id"`
+	}
+	// 获取文章详情响应
+	GetPostResp {
+		Id        int64  `json:"id"`
+		Title     string `json:"title"`
+		Content   string `json:"content"`
+		UserId    int64  `json:"userId"`
+		CreatedAt string `json:"createdAt"`
+		UpdatedAt string `json:"updatedAt"`
+	}
+	// 更新文章请求
+	UpdatePostReq {
+		Id      int64  `path:"id"`
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
+	// 更新文章响应
+	UpdatePostResp {
+		Success bool `json:"success"`
+	}
+	// 删除文章请求
+	DeletePostReq {
+		Id int64 `path:"id"`
+	}
+	// 删除文章响应
+	DeletePostResp {
+		Success bool `json:"success"`
+	}
+)
+
+// 评论相关模型
+type (
+	// 创建评论请求
+	CreateCommentReq {
+		PostId  int64  `json:"postId"`
+		Content string `json:"content"`
+	}
+	// 创建评论响应
+	CreateCommentResp {
+		Id int64 `json:"id"`
+	}
+	// 获取评论列表请求
+	GetCommentsReq {
+		PostId int64 `path:"postId"`
+	}
+	// 评论信息
+	Comment {
+		Id        int64  `json:"id"`
+		Content   string `json:"content"`
+		UserId    int64  `json:"userId"`
+		PostId    int64  `json:"postId"`
+		CreatedAt string `json:"createdAt"`
+	}
+	// 获取评论列表响应
+	GetCommentsResp {
+		Comments []Comment `json:"comments"`
+	}
+)
+
+// 博客服务接口
+@server (
+	group:  user
+	prefix: /api/v1
+)
+service blog {
+	// 用户相关接口
+	@doc "用户注册"
+	@handler UserRegister
+	post /user/register (UserRegisterReq) returns (UserRegisterResp)
+
+	@doc "用户登录"
+	@handler UserLogin
+	post /user/login (UserLoginReq) returns (UserLoginResp)
+}
+
+@server (
+	group:  post
+	prefix: /api/v1
+)
+service blog {
+	// 文章相关接口
+	@doc "创建文章"
+	@handler CreatePost
+	post /post/Create (CreatePostReq) returns (CreatePostResp)
+
+	@doc "获取文章列表"
+	@handler GetPosts
+	get /post/list (GetPostsReq) returns (GetPostsResp)
+
+	@doc "获取文章详情"
+	@handler GetPost
+	get /post/info (GetPostReq) returns (GetPostResp)
+
+	@doc "更新文章"
+	@handler UpdatePost
+	put /post/update (UpdatePostReq) returns (UpdatePostResp)
+
+	@doc "删除文章"
+	@handler DeletePost
+	delete /post/delete (DeletePostReq) returns (DeletePostResp)
+}
+
+@server (
+	group:  comment
+	prefix: /api/v1
+)
+service blog {
+	// 评论相关接口
+	@doc "创建评论"
+	@handler CreateComment
+	post /comment/Create (CreateCommentReq) returns (CreateCommentResp)
+
+	@doc "获取评论列表"
+	@handler GetComments
+	get /comment/info (GetCommentsReq) returns (GetCommentsResp)
+}
+
