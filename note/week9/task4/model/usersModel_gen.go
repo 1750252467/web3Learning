@@ -34,6 +34,7 @@ type (
 		FindOneByEmail(ctx context.Context, email string) (*Users, error)
 		Update(ctx context.Context, data *Users) error
 		Delete(ctx context.Context, id int64) error
+		Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error
 	}
 
 	defaultUsersModel struct {
@@ -144,4 +145,12 @@ func (m *defaultUsersModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn,
 
 func (m *defaultUsersModel) tableName() string {
 	return m.table
+}
+
+func (m *defaultUsersModel) Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error {
+
+	return m.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+		return fn(ctx, session)
+	})
+
 }
