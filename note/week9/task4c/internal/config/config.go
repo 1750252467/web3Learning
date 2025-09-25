@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/rest"
-	"k8s.io/client-go/tools/cache"
 )
 
 type Config struct {
@@ -11,5 +11,5 @@ type Config struct {
 	DB struct {
 		DataSource string
 	}
-	Cache cache.Config
+	Cache cache.CacheConf
 }

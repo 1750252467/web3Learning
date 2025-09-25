@@ -3,7 +3,8 @@ package svc
 import (
 	"task4c/internal/config"
 	"task4c/internal/model"
-	"task4c/internal/model/sqlx"
+
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type ServiceContext struct {

@@ -34,6 +34,7 @@ type (
 		FindOneByEmail(ctx context.Context, email string) (*Users, error)
 		Update(ctx context.Context, data *Users) error
 		Delete(ctx context.Context, id int64) error
+		FindOneByUsername(ctx context.Context, username string) (*Users, error)
 	}
 
 	defaultUsersModel struct {
@@ -144,4 +145,28 @@ func (m *defaultUsersModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn,
 
 func (m *defaultUsersModel) tableName() string {
 	return m.table
+}
+func (m *customUsersModel) FindOneByUsername(ctx context.Context, username string) (*Users, error) {
+	// 构建缓存键
+	zeroDemoUsersUsernameKey := fmt.Sprintf("%s%v", cacheZeroDemoUsersUsernamePrefix, username)
+	var resp Users
+
+	// 使用带索引的查询来实现缓存
+	err := m.QueryRowIndexCtx(ctx, &resp, zeroDemoUsersUsernameKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v any) (i any, e error) {
+		query := fmt.Sprintf("select %s from %s where `username` = ? limit 1", usersRows, m.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, username); err != nil {
+			return nil, err
+		}
+		return resp.Id, nil
+	}, m.queryPrimary)
+
+	// 处理查询结果
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
 }
