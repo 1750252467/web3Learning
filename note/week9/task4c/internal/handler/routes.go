@@ -15,37 +15,14 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	// 公开路由 - 不需要认证的接口
 	server.AddRoutes(
 		[]rest.Route{
-			{
-				// 创建评论
-				Method:  http.MethodPost,
-				Path:    "/comment/Create",
-				Handler: comment.CreateCommentHandler(serverCtx),
-			},
 			{
 				// 获取评论列表
 				Method:  http.MethodGet,
 				Path:    "/comment/info",
 				Handler: comment.GetCommentsHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/api/v1"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				// 创建文章
-				Method:  http.MethodPost,
-				Path:    "/post/Create",
-				Handler: post.CreatePostHandler(serverCtx),
-			},
-			{
-				// 删除文章
-				Method:  http.MethodDelete,
-				Path:    "/post/delete",
-				Handler: post.DeletePostHandler(serverCtx),
 			},
 			{
 				// 获取文章详情
@@ -60,18 +37,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: post.GetPostsHandler(serverCtx),
 			},
 			{
-				// 更新文章
-				Method:  http.MethodPut,
-				Path:    "/post/update",
-				Handler: post.UpdatePostHandler(serverCtx),
-			},
-		},
-		rest.WithPrefix("/api/v1"),
-	)
-
-	server.AddRoutes(
-		[]rest.Route{
-			{
 				// 用户登录
 				Method:  http.MethodPost,
 				Path:    "/user/login",
@@ -83,7 +48,39 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/user/register",
 				Handler: user.UserRegisterHandler(serverCtx),
 			},
+			{
+				// 创建文章（支持从请求体获取user_id）
+				Method:  http.MethodPost,
+				Path:    "/post/Create",
+				Handler: post.CreatePostHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/api/v1"),
+	)
+
+	// 需要认证的路由 - 使用JWT中间件保护
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// 删除文章
+				Method:  http.MethodDelete,
+				Path:    "/post/delete",
+				Handler: post.DeletePostHandler(serverCtx),
+			},
+			{
+				// 更新文章
+				Method:  http.MethodPut,
+				Path:    "/post/update",
+				Handler: post.UpdatePostHandler(serverCtx),
+			},
+			{
+				// 创建评论
+				Method:  http.MethodPost,
+				Path:    "/comment/Create",
+				Handler: comment.CreateCommentHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1"),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }

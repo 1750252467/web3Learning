@@ -2,8 +2,12 @@ Name: blog
 Host: 0.0.0.0
 Port: 8888
 
+Auth:
+  AccessSecret: your-jwt-secret-key
+  AccessExpire: 604800
+
 DB:
   DataSource: root:080657@tcp(127.0.0.1:3306)/zero_demo?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 Cache:
   - Host: 127.0.0.1:6379
-    Pass: 
+    Pass:
