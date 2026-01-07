@@ -6,6 +6,7 @@ package types
 type CreatePostReq struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
+	UserId  string `json:"user_id"`
 }
 
 type CreatePostResp struct {

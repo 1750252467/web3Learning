@@ -5,10 +5,11 @@ import (
 	"errors"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
 	"task4c/internal/model"
 	"task4c/internal/svc"
 	"task4c/internal/types"
+
+	"github.com/golang-jwt/jwt/v4"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
